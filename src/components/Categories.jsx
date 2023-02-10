@@ -5,7 +5,6 @@ import CategoriesItem from './CategoriesItem';
 const Container = Styled.div`
 display:flex;
 padding:20px;
-
 `;
 const Categories = () => {
   return (
