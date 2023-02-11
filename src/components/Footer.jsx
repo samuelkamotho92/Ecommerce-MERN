@@ -2,10 +2,12 @@ import React from 'react'
 import { Facebook,Instagram, Twitter ,RoomOutlined ,PhoneOutlined, MailOutline} from '@material-ui/icons';
 import Styled from 'styled-components';
 import Mpesa from '../assets/Lipa na mpesa.jpg'
+import {mobile} from '../resp'
 const Container = Styled.div`
 display:flex;
 align-items:center;
 justify-content:space-between;
+${mobile({flexDirection:"column"})}
 `;
 const Left = Styled.div`
 flex:1;
@@ -16,7 +18,7 @@ padding:20px;
 const Center = Styled.div`
 flex:1;
 padding:20px;
-
+${mobile({display:"none"})}
 `;
 const Title = Styled.h3`
 margin-bottom:30px;

@@ -1,5 +1,6 @@
 import React from 'react';
 import Styled from 'styled-components';
+import {mobile} from '../resp';
 const Container = Styled.div`
 flex:1;
 margin:3px;
@@ -10,6 +11,7 @@ const Image = Styled.img`
 width:100%;
 height:100%;
 object-fit:cover;
+${mobile({height:"20vh"})}
 `;
 const Info = Styled.div`
 position:absolute;

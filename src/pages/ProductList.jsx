@@ -5,16 +5,19 @@ import Announcements from '../components/Announcements';
 import Footer from '../components/Footer';
 import Navabar from '../components/Navabar';
 import Newsletter from '../components/Newsletter';
+import { mobile } from '../resp';
+
 const Container = Styled.div``;
 const FilterContainer = Styled.div`
 display:flex;
 align-items:center;
 justify-content:space-between;
-margin
+
 
 `;
 const Filter = Styled.div`
 margin:20px;
+${mobile({margin:"0px 20px",display:'flex',flexDirection:'column'})}
 `;
 const Title = Styled.h1`
 margin:20px;
@@ -23,11 +26,13 @@ const FilterText = Styled.span`
 font-size:20px;
 font-weight:600;
 margin-right:20px;
+${mobile({marginRight:"0px"})}
 `;
 
 const Select = Styled.select`
 padding:10px;
 margin-right:20px;
+${mobile({margin:"10px 0px"})}
 `;
 const Option = Styled.option``;
 

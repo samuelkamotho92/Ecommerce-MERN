@@ -5,14 +5,14 @@ import Footer from '../components/Footer';
 import Navabar from '../components/Navabar';
 import Newsletter from '../components/Newsletter';
 import { Add,Remove } from '@material-ui/icons';
-
+import { mobile } from '../resp';
 const Container = Styled.div``;
 const Wrapper = Styled.div`
 padding:50px;
 display:flex;
 align-items:center; 
 justify-content:space-between;
-
+${mobile({padding:"10px",flexDirection:"column"})}
 `;
 const ImageContainer = Styled.div`
 flex:1;
@@ -21,6 +21,7 @@ const Image = Styled.img`
 width:100%;
 height:90vh;
 object-fit:cover;
+${mobile({height:"40%"})}
 `;
 const Title = Styled.h1`
 font-weight:200;
@@ -28,6 +29,7 @@ font-weight:200;
 const InfoContainer = Styled.div`
 flex:1;
 padding:0px 50px;
+${mobile({padding:"10px"})}
 `;
 const Description = Styled.p`
 margin:20px 0px;
@@ -53,6 +55,7 @@ width:50%;
 margin: 0px 0px;
 display:flex;
 justify-content:space-between;
+${mobile({width:"100%"})}
 `;
 const Filter = Styled.div`
 display:flex;
@@ -78,6 +81,7 @@ width:50%;
 display:flex;
 align-items:center;
 justify-content:space-between;
+${mobile({width:"100%"})} 
 `;
 const Amount = Styled.span`
 width:30px;

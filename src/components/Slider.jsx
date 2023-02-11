@@ -5,6 +5,7 @@ import slider1 from '../assets/Central supermarket.jpeg';
 import slider2 from '../assets/central super.jpeg';
 import slider3 from '../assets/central super2.jpeg';
 import { sliderItems } from '../Data';
+import { mobile } from '../resp';
 const Container = Styled.div`
 width:100%;
 height:100vh;
@@ -12,6 +13,7 @@ display:flex;
 background-color:white;
 position:relative;
 overflow:hidden;
+${mobile({display:"none"})}
 `
 const Wrapper = Styled.div`
 height:100%;
