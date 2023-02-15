@@ -21,7 +21,7 @@ const accessToken = jwt.sign(
         {expiresIn:"3d"}
     );
 resp.status(200).json({
-    ...registered,
+    registered,
     accessToken
 })
 }catch(err){

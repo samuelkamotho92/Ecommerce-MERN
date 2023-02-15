@@ -9,4 +9,7 @@ router.route('/:id')
 .get(verifyUtility.verifyToken,verifyUtility.verifyTokenAuthourization,getUserControler.getOneUser)
 .patch(verifyUtility.verifyToken,verifyUtility.verifyTokenAuthourization,getUserControler.update)
 .delete(verifyUtility.verifyToken,verifyUtility.verifyTokenAuthourization,verifyUtility.verifyTokenAdmin,getUserControler.delete)
+router.route('/stats')
+.get(verifyUtility.verifyToken,verifyUtility.verifyTokenAuthourization,verifyUtility.verifyTokenAdmin,getUserControler.getStats)
+
 module.exports = router;

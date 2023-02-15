@@ -3,11 +3,14 @@ const CryptoJS = require('crypto-js');
 const bcrypt = require('bcrypt');
 exports.getAllUsers = async(req,resp)=>{
     try{
-const getUsers = await User.find();
-const {password,...info} = getUsers._doc;
+        const query = req.query.new;
+        // query ? await User.find().sort({ _id: -1 }).limit(5):
+const getUsers = query ? await User.find().sort({ _id: -1 }).limit(5):await User.find();
+// const {password,...info} = getUsers._id;
+console.log(getUsers)
 resp.status(200).json({
-    status:'success',
-    ...info
+   message: "data sent successfuly",
+   getUsers
 })
     }catch(err){
 resp.status(404).json({
@@ -15,10 +18,6 @@ resp.status(404).json({
     error:err
 })
     }
-console.log('userfetched');
-resp.status(200).json({
-    message:'uses fetched'
-})
 }
 
 exports.createUser =  async(req,resp)=>{
@@ -90,3 +89,27 @@ resp.status(404).json({
 }
 
 
+exports.getStats = async(req,resp)=>{
+    const date = new Date();
+  const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
+
+  try {
+    const data = await User.aggregate([
+      { $match: { createdAt: { $gte: lastYear } } },
+      {
+        $project: {
+          month: { $month: "$createdAt" },
+        },
+      },
+      {
+        $group: {
+          _id: "$month",
+          total: { $sum: 1 },
+        },
+      },
+    ]);
+    resp.status(200).json(data)
+  } catch (err) {
+    resp.status(500).json(err);
+  }
+}
