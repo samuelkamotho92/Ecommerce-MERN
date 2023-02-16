@@ -1,14 +1,9 @@
 import './App.css';
-import Cart from './pages/Cart';
-// import Cart from './pages/Cart';
-import Home from './pages/Home';
-// import Login from './pages/Login';
-// import Product from './pages/Product';
-
+import Mainpage from './Admin/Dashboard/Mainpage';
 function App() {
   return (
     <div className="App">
-<Home />
+<Mainpage />
     </div>
   );
 }
