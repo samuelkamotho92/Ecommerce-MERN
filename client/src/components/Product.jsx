@@ -1,7 +1,10 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import Styled from 'styled-components'
 import {ShoppingCartOutlined,FavoriteBorderOutlined,SearchOutlined} from '@material-ui/icons';
-
+import {Link} from 'react-router-dom'
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { publicRequets } from '../requestMethod';
 const Info = Styled.div`
 opacity:0;
 width:100%;
@@ -69,7 +72,9 @@ const Product = ({item}) => {
 <ShoppingCartOutlined />
     </Icon>
     <Icon>
-<SearchOutlined />
+      <Link to={`/product/${item._id}`}>
+      <SearchOutlined />
+      </Link>
     </Icon>
     <Icon>
 <FavoriteBorderOutlined />

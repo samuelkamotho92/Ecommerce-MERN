@@ -1,6 +1,7 @@
 import React from 'react';
 import Styled from 'styled-components';
 import {mobile} from '../resp';
+import {Link} from 'react-router-dom';
 const Container = Styled.div`
 flex:1;
 margin:3px;
@@ -38,12 +39,14 @@ cursor:pointer;
 const CategoriesItem = ({item}) => {
   return (
     <Container>
-<Image src={item.img} alt={item.id}>
+      <Link to={`/products/${item.cat}`}>
+      <Image src={item.img} alt={item.id}>
 </Image>
 <Info>
     <Title>{item.title}</Title>
     <Button>SHOP NOW</Button>
 </Info>
+      </Link>
     </Container>
   )
 }

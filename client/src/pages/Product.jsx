@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import Styled from 'styled-components';
 import Announcements from '../components/Announcements';
 import Footer from '../components/Footer';
@@ -6,6 +6,9 @@ import Navabar from '../components/Navabar';
 import Newsletter from '../components/Newsletter';
 import { Add,Remove } from '@material-ui/icons';
 import { mobile } from '../resp';
+import {useLocation} from 'react-router-dom';
+import { publicRequets } from '../requestMethod';
+import axios from 'axios';
 const Container = Styled.div``;
 const Wrapper = Styled.div`
 padding:50px;
@@ -105,55 +108,83 @@ font-weight:500;
 `;
 
 const Product = () => {
+  const location = useLocation()
+  const id = location.pathname.split('/')[2];
+  console.log(id);
+  const [product,setProduct] = useState({});
+  const [amount,setAmount] = useState(1);
+  const [color,setColor] = useState('');
+  const [size,setSize] = useState('');
+  const handleClick = (type)=>{
+if(type === 'dec'){
+ amount > 1 && setAmount(amount - 1);
+}else{
+setAmount(amount + 1);
+}
+  }
+  const addCart = ()=>{
+    console.log('added to cart');
+  }
+  useEffect(()=>{
+    const getProd = async()=>{
+    try
+    {
+      const url = `http://localhost:8000/api/v1/product/${id}`
+    const resp = await axios.get(url);
+    setProduct(resp.data);
+    }catch(err){
+    console.log(err);
+    }
+    }
+    getProd();
+      },[id])
   return (
     <Container>
        <Announcements />
        <Navabar />
        <Wrapper>
 <ImageContainer>
-    <Image src='https://i.ibb.co/S6qMxwr/jean.jpg'>
+    <Image src={product.img}>
     </Image>
 </ImageContainer>
 <InfoContainer>
 <Title>
-Latest fashion
+{product.title}
 </Title>
 <Description>
-Lorem ipsum dolor sit amet consectetur
- adipisicing elit. Id, recusandae.
+{product.desc}
 </Description>
 <Price>
-    2000ksh
+    {product.price}
 </Price>
 <FilterContainer>
     <Filter>
         <FilterTitle>
-          Color    
+          Color
         </FilterTitle>
-        <FilterColor color="black"/>
-        <FilterColor color="darkblue"/>
-        <FilterColor color="gray"/>
+        {product.color?.map((c)=>(
+       <FilterColor color={c} key={c} onClick={()=>setColor(c)}/>
+    ))}
     </Filter>
     <Filter>
     <FilterTitle>
-          Size 
+        Size
         </FilterTitle>
-        <FilterSize>
-<FilterSizeOption>XS</FilterSizeOption>
-<FilterSizeOption>L</FilterSizeOption>
-<FilterSizeOption>M</FilterSizeOption>
-<FilterSizeOption>S</FilterSizeOption>
-<FilterSizeOption>XL</FilterSizeOption>
+        <FilterSize onChange={(e)=>setSize(e.target.value)}>
+    {product.size?.map((s)=>(
+      <FilterSizeOption key={s}>{s}</FilterSizeOption> 
+    ))}
+       
         </FilterSize>
     </Filter>
 </FilterContainer>
 <AddContainer>
 <AmountContainer>
-<Remove />
-<Amount>1</Amount>
-<Add />
+<Remove onClick={()=>handleClick('dec')}/>
+<Amount>{amount}</Amount>
+<Add onClick={()=>handleClick('inc')}/>
 </AmountContainer>
-<Button>ADD TO CART</Button>
+<Button onClick={()=>addCart()}>ADD TO CART</Button>
 </AddContainer>
 </InfoContainer>
        </Wrapper>

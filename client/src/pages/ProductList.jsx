@@ -1,4 +1,4 @@
-import React from 'react'
+import React ,{useState}  from 'react'
 import  Styled from 'styled-components';
 import Allproducts from '../components/Allproducts';
 import Announcements from '../components/Announcements';
@@ -6,14 +6,13 @@ import Footer from '../components/Footer';
 import Navabar from '../components/Navabar';
 import Newsletter from '../components/Newsletter';
 import { mobile } from '../resp';
+import { useLocation } from 'react-router-dom';
 
 const Container = Styled.div``;
 const FilterContainer = Styled.div`
 display:flex;
 align-items:center;
 justify-content:space-between;
-
-
 `;
 const Filter = Styled.div`
 margin:20px;
@@ -37,31 +36,44 @@ ${mobile({margin:"10px 0px"})}
 const Option = Styled.option``;
 
 const ProductList = () => {
+    const location = useLocation()
+    const cat = location.pathname.split('/')[2];
+    const [filters,setFilter] = useState({});
+    const [sorts,setSort] = useState('newest');
+    const handleFilters = (e)=>{ 
+e.preventDefault();
+const value = e.target.value;
+setFilter({
+    ...filters,
+[e.target.name]:value,
+});
+    };
+    console.log(filters);
   return (
     <Container>
     <Announcements />
     <Navabar />
     <Title>
-        Clothes
+        {cat}
     </Title>
     <FilterContainer>
 <Filter>
     <FilterText>
     Filter Product
     </FilterText>
-    <Select>
-    <Option  disabled selected>
+    <Select name='color'  onChange={handleFilters}>
+    <Option  disabled >
 Color
     </Option>
-        <Option>White</Option>
-        <Option>Black</Option>
-        <Option>Red</Option>
-        <Option>Blue</Option>
-        <Option>Yellow</Option>
-        <Option>Green</Option>
+        <Option>white</Option>
+        <Option>black</Option>
+        <Option>red</Option>
+        <Option>blue</Option>
+        <Option>yellow</Option>
+        <Option>green</Option>
     </Select>
-    <Select>
-    <Option  disabled selected>
+    <Select name='size' onChange={handleFilters}>
+    <Option  disabled >
 Size
     </Option>
         <Option>XS</Option>
@@ -76,20 +88,21 @@ Size
 <FilterText>
     Sort Product
 </FilterText>
-<Select>
-    <Option  disabled selected>
+<Select onChange={e=>setSort(e.target.value)}>
+    <Option  disabled >
 Brand
     </Option>
-        <Option>LV</Option>
-        <Option>Paris</Option>
-        <Option>Dubai</Option>
-        <Option>Kenyan</Option>
-        <Option>Zara</Option>
-        <Option>African</Option>
+        <Option value="newest">Newest</Option>
+        <Option value="lv">LV</Option>
+        <Option value="paris">Paris</Option>
+        <Option value="dubai">Dubai</Option>
+        <Option value="kenya">Kenyan</Option>
+        <Option value="zara">Zara</Option>
+        <Option value="africa">African</Option>
     </Select>
 </Filter>
     </FilterContainer>  
-<Allproducts />
+<Allproducts cat={cat} filters={filters} sorts={sorts}/>
 <Newsletter />
 <Footer />
     </Container>
