@@ -4,6 +4,7 @@ const authRoute = require('./Views/auth');
 const prodRoute = require('./views/Product');
 const cartRoute = require('./views/cart');
 const orderRoute = require('./Views/Order');
+const paymentRoute = require('./Views/payments');
 const cors = require('cors');
 const app = express();
 app.use(cors({
@@ -17,6 +18,6 @@ app.use('/api/v1/auth',authRoute);
 app.use('/api/v1/product',prodRoute);
 app.use('/api/v1/cart',cartRoute);
 app.use('/api/v1/order',orderRoute);
-
+app.use('/api/v1/pay',paymentRoute)
 
 module.exports = app;

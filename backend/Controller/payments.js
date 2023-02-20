@@ -1,4 +1,4 @@
-const stripe = require('stripe');
+const stripe = require('stripe')(process.env.STRIPE_KEY);
 exports.stripePayments = async(req,resp)=>{
 stripe.charges.create({
     source:req.body.tokenId,

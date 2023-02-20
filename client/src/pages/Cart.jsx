@@ -1,10 +1,15 @@
 import { Add, Remove } from '@material-ui/icons';
-import React from 'react'
+import React,{useState,useEffect} from 'react';
 import Styled from 'styled-components';
 import Announcements from '../components/Announcements';
 import Footer from '../components/Footer';
 import Navabar from '../components/Navabar';
 import { mobile } from '../resp';
+import { useSelector, useDispatch } from 'react-redux';
+import StripeCheckout from 'react-stripe-checkout';
+import centralSup from '../assets/central super.jpeg';
+import axios from 'axios';
+import {useHistory} from 'react-router-dom';
 const Container = Styled.div`
 `;
 const Wrapper = Styled.div`
@@ -147,7 +152,32 @@ transition:all 1s ease;
   background-color:teal;
 }
 `;
+console.log(process.env.REACT_APP_STRIPE_KEY);
+ const KEY = "pk_test_51MX2dJFIqJP3zxtmcqkI1dHBfR0NM1RCn4CaYvHIGRKcTKOC94VFJaqy6zvHuDuWyHtJSImGKDevrPoNwMjvG3ZU00BgsbrGj3";
 const Cart = () => {
+  const cart = useSelector(state=>state.cart)
+  const [stripeToken,setStripeToken] = useState(null);
+  const onToken = (token)=>{
+setStripeToken(token);
+  }
+  console.log(stripeToken);
+const history = useHistory()
+  useEffect(()=>{
+    const sendReq = async()=>{
+      try {
+  const url = `http://localhost:8000/api/v1/pay/payments`;
+  const resp = await axios.post(url,{
+  tokenId:stripeToken,
+  amount:cart.total * 100
+});
+console.log(resp.data);
+        history.push('/')
+    }catch(err){
+console.log(err);
+    }
+  }
+sendReq();
+},[stripeToken])
   return (
     <Container>
         <Announcements />
@@ -174,29 +204,38 @@ Shopping Bag (7)
     </Top>
     <Bottom>
  <Info>
+  {
+    cart.products.map(product=>(
 <Product>
     <ProductDetail>
-        <Image  src='https://i.pinimg.com/originals/2d/af/f8/2daff8e0823e51dd752704a47d5b795c.png'/>
+        <Image  src={product.img}/>
     <Details>
-<ProductName><b>Product: </b>New T-shirt</ProductName>
-<ProductId><b>Id: </b>0987654321</ProductId>
-<ProductColor color='gray'/>
-<ProductSize><b>Size: </b>L</ProductSize>
+<ProductName><b>Product: </b>{product.title}</ProductName>
+<ProductId><b>Id: </b>{product._id}</ProductId>
+<ProductColor color={product.color}/>
+<ProductSize><b>Size: </b>{product.size}</ProductSize>
     </Details>
     </ProductDetail>
     <ProductPrice>
 <ProductAmountCon>
 <Add />
-<ProductAmount>2</ProductAmount>
+<ProductAmount>{product.quantity}</ProductAmount>
 <Remove />
 </ProductAmountCon>
-<ProdutcActPrice>2000ksh</ProdutcActPrice>
+<ProdutcActPrice>{product.price*product.quantity}</ProdutcActPrice>
     </ProductPrice>
-    <Summary>
+</Product>
+
+    ))
+  }
+
+<Hr />
+ </Info>
+ <Summary>
 <SummaryTitle>
 Order Summary
 </SummaryTitle>
-<Summaryitem>
+<Summaryitem> 
 <SummaryitemText>
   SubTotal
 </SummaryitemText>
@@ -225,37 +264,21 @@ Shipping Discount
   Total
 </SummaryitemText>
 <SummaryitemPrice>
-  2000ksh
+{cart.total}
 </SummaryitemPrice>
 </Summaryitem>
-<Button>CHECKOUT</Button>
+<StripeCheckout
+name="Central Supermarket"
+image={centralSup}
+billingAddress
+shippingAddress
+description={`Your total is $${cart.total}`}
+amount={cart.total * 100}
+token={onToken}
+stripeKey={KEY}>
+  <Button>CHECKOUT NOW</Button>
+</StripeCheckout>
  </Summary>
-</Product>
-<Hr />
-{/* <Product>
-    <ProductDetail>
-        <Image  src='https://i.pinimg.com/originals/2d/af/f8/2daff8e0823e51dd752704a47d5b795c.png'/>
-    <Details>
-<ProductName><b>Product: </b>New T-shirt</ProductName>
-<ProductId><b>Id: </b>0987654321</ProductId>
-<ProductColor color='gray'/>
-<ProductSize><b>Size: </b>L</ProductSize>
-    </Details>
-    </ProductDetail>
-    <ProductPrice>
-<ProductAmountCon>
-<Add />
-<ProductAmount>2</ProductAmount>
-<Remove />
-</ProductAmountCon>
-<ProdutcActPrice>2000ksh</ProdutcActPrice>
-    </ProductPrice>
-    <Summary>
-
- </Summary>
-</Product> */}
- </Info>
-
     </Bottom>
 
  </Wrapper>

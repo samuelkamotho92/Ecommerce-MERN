@@ -8,6 +8,8 @@ import { Add,Remove } from '@material-ui/icons';
 import { mobile } from '../resp';
 import {useLocation} from 'react-router-dom';
 import { publicRequets } from '../requestMethod';
+import { addProduct } from '../redux/cartRedux';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 const Container = Styled.div``;
 const Wrapper = Styled.div`
@@ -112,18 +114,19 @@ const Product = () => {
   const id = location.pathname.split('/')[2];
   console.log(id);
   const [product,setProduct] = useState({});
-  const [amount,setAmount] = useState(1);
+  const [quantity,setQuantity] = useState(1);
   const [color,setColor] = useState('');
   const [size,setSize] = useState('');
+  const dispatch = useDispatch();
   const handleClick = (type)=>{
 if(type === 'dec'){
- amount > 1 && setAmount(amount - 1);
+ quantity > 1 && setQuantity(quantity - 1);
 }else{
-setAmount(amount + 1);
+setQuantity(quantity + 1);
 }
   }
   const addCart = ()=>{
-    console.log('added to cart');
+    dispatch(addProduct({...product,quantity,color,size}))
   }
   useEffect(()=>{
     const getProd = async()=>{
@@ -150,7 +153,7 @@ setAmount(amount + 1);
 <InfoContainer>
 <Title>
 {product.title}
-</Title>
+</Title> 
 <Description>
 {product.desc}
 </Description>
@@ -181,7 +184,7 @@ setAmount(amount + 1);
 <AddContainer>
 <AmountContainer>
 <Remove onClick={()=>handleClick('dec')}/>
-<Amount>{amount}</Amount>
+<Amount>{quantity}</Amount>
 <Add onClick={()=>handleClick('inc')}/>
 </AmountContainer>
 <Button onClick={()=>addCart()}>ADD TO CART</Button>
