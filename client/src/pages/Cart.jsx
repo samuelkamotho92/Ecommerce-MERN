@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import StripeCheckout from 'react-stripe-checkout';
 import centralSup from '../assets/central super.jpeg';
 import axios from 'axios';
-import {useHistory} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 const Container = Styled.div`
 `;
 const Wrapper = Styled.div`
@@ -161,23 +161,34 @@ const Cart = () => {
 setStripeToken(token);
   }
   console.log(stripeToken);
-const history = useHistory()
+const navigate = useNavigate()
   useEffect(()=>{
     const sendReq = async()=>{
       try {
-  const url = `http://localhost:8000/api/v1/pay/payments`;
-  const resp = await axios.post(url,{
-  tokenId:stripeToken,
-  amount:cart.total * 100
-});
-console.log(resp.data);
-        history.push('/')
+  const url = `http://localhost:8000/api/v1/pay/payments`
+  const resp = await fetch(url,{
+    method:'POST',
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      tokenId:stripeToken.id,
+      amount:cart.total*100
+    }),
+    credentials:'include',
+    withCredentials:true
+  })
+  const getData = await resp.json();
+console.log(getData);
+  navigate('/success', { state:{
+    stripeData: getData,
+    products: cart}
+  }
+ );
     }catch(err){
 console.log(err);
     }
   }
-sendReq();
-},[stripeToken])
+ stripeToken && sendReq();
+},[stripeToken,navigate,cart.total])
   return (
     <Container>
         <Announcements />

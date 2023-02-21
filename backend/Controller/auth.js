@@ -55,6 +55,7 @@ if(correct){
     resp.status(200).json({
         ...info,
         accessToken
+
     })
 }
     }catch(err){
