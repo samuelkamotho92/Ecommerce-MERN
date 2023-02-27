@@ -5,7 +5,8 @@ import ProductList from './pages/ProductList';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Cart from './pages/Cart';
-import Success from './pages/Success'
+import Success from './pages/Success';
+
 import { useSelector } from 'react-redux';
 import { BrowserRouter as Router ,Routes , Route , Navigate} from 'react-router-dom';
 function App() {

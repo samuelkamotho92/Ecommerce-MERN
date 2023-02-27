@@ -80,8 +80,21 @@ const Navabar = () => {
   </Left>
   <Center><Logo>CENTRAL SUPERMARKET</Logo></Center>
   <Right>
-    <MenuItems>Sign Up</MenuItems>
-    <MenuItems>Sign In</MenuItems>
+    <MenuItems>
+    <Link to='/register'>
+    Register
+    </Link>
+    </MenuItems>
+    <MenuItems>
+    <Link to='/login'>
+      Login
+    </Link>
+    </MenuItems>
+    <MenuItems>
+    <Link to='https://centralsupermarket-admin.netlify.app/'>
+      Admin
+    </Link>
+    </MenuItems>
     <Link to='/cart'>
     <MenuItems>
     <Badge badgeContent={quantity} color="secondary">

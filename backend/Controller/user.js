@@ -5,13 +5,9 @@ exports.getAllUsers = async(req,resp)=>{
     try{
         const query = req.query.new;
         // query ? await User.find().sort({ _id: -1 }).limit(5):
-const getUsers = query ? await User.find().sort({ _id: -1 }).limit(5):await User.find();
-// const {password,...info} = getUsers._id;
-console.log(getUsers)
-resp.status(200).json({
-   message: "data sent successfuly",
-   getUsers
-})
+const users = query ? await User.find().sort({ _id: -1 }).limit(5):await User.find();
+console.log(users)
+resp.status(200).json(users)
     }catch(err){
 resp.status(404).json({
     status:'failure',
@@ -88,11 +84,12 @@ resp.status(404).json({
     }
 }
 
-
 exports.getStats = async(req,resp)=>{
+    console.log('statistics ')
+    // resp.status(200).json('statistcs')
     const date = new Date();
   const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
-
+console.log(lastYear,date)
   try {
     const data = await User.aggregate([
       { $match: { createdAt: { $gte: lastYear } } },
@@ -108,6 +105,7 @@ exports.getStats = async(req,resp)=>{
         },
       },
     ]);
+    console.log(data);
     resp.status(200).json(data)
   } catch (err) {
     resp.status(500).json(err);

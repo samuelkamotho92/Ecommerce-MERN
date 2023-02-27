@@ -4,7 +4,6 @@ dotenv.config({path:'./.env'});
 const app = require('./app')
 const port = process.env.PORT;
 const dburl = process.env.DBURL;
-console.log(port);
 mongoose.set('strictQuery',false);
 mongoose.connect(dburl).then(()=>{
     app.listen(port,()=>{

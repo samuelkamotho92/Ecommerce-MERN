@@ -55,28 +55,36 @@ exports.updateOrder = async(req,resp)=>{
     }
 
     exports.getIncome = async(req,resp)=>{
-  const date = new Date();
-  const lastMonth = new Date(date.setMonth(date.getMonth() - 1));
-  const previousMonth = new Date(new Date().setMonth(lastMonth.getMonth() - 1));
-  console.log(lastMonth,previousMonth);
-try{
-  const income = await Orders.aggregate([
-    { $match: { createdAt: { $gte: previousMonth } } },
-    {
-      $project: {
-        month: { $month: "$createdAt" },
-        sales: "$amount",
-      },
-    },
-    {
-      $group: {
-        _id: "$month",
-        total: { $sum: "$sales" },
-      },
-    },
-  ]);
-  resp.status(200).json(income);
-}catch(err){
-resp.status(404).json(err);
-}
+      const productId = req.query.pid;
+      const date = new Date();
+      const lastMonth = new Date(date.setMonth(date.getMonth() - 1));
+      const previousMonth = new Date(new Date().setMonth(lastMonth.getMonth() - 1));
+    
+      try {
+        const income = await Orders.aggregate([
+          {
+            $match: {
+              createdAt: { $gte: previousMonth },
+              ...(productId && {
+                products: { $elemMatch: { productId } },
+              }),
+            },
+          },
+          {
+            $project: {
+              month: { $month: "$createdAt" },
+              sales: "$amount",
+            },
+          },
+          {
+            $group: {
+              _id: "$month",
+              total: { $sum: "$sales" },
+            },
+          },
+        ]);
+        resp.status(200).json(income);
+      } catch (err) {
+        resp.status(500).json(err);
+      }
     }

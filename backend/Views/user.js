@@ -3,13 +3,15 @@ const getUserControler = require('../Controller/user')
 const verifyUtility = require('../utility/verifyToken')
 const {verifyTokenAuthourization} = require('../utility/verifyToken')
 const router = express.Router();
-router.get('/getUser',verifyUtility.verifyToken,verifyUtility.verifyTokenAuthourization,verifyUtility.verifyTokenAdmin,getUserControler.getAllUsers);
+//verifyUtility.verifyToken,verifyUtility.verifyTokenAuthourization,verifyUtility.verifyTokenAdmin,
+//verifyUtility.verifyToken,verifyUtility.verifyTokenAuthourization,verifyUtility.verifyTokenAdmin,
+router.get('/stats',getUserControler.getStats)
+router.get('/getUser',getUserControler.getAllUsers);
 router.post('/createUser',getUserControler.createUser)
 router.route('/:id')
-.get(verifyUtility.verifyToken,verifyUtility.verifyTokenAuthourization,getUserControler.getOneUser)
-.patch(verifyUtility.verifyToken,verifyUtility.verifyTokenAuthourization,getUserControler.update)
-.delete(verifyUtility.verifyToken,verifyUtility.verifyTokenAuthourization,verifyUtility.verifyTokenAdmin,getUserControler.delete)
-router.route('/stats')
-.get(verifyUtility.verifyToken,verifyUtility.verifyTokenAuthourization,verifyUtility.verifyTokenAdmin,getUserControler.getStats)
+.get(getUserControler.getOneUser)
+.patch(getUserControler.update)
+.delete(getUserControler.delete)
+
 
 module.exports = router;
